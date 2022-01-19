@@ -1,0 +1,29 @@
+<!-- Стартовая страница сайта -->
+<!-- Подключение шаблона-фундамента для страницы -->
+{% extends 'base.html' %}
+{% block title %}
+Стартовая страница
+{% endblock %}
+<!-- Блок для экстетического оформления стартовой страницы, информации о текущей должности,
+перехода на страницу регистрации и входа -->
+{% block content %}
+<div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-dark" style="color:white">
+    <div class="col-md-5 p-lg-5 mx-auto my-5">
+        <h1 class="display-4 font-weight-normal">Удобное расписание для сотрудников театра</h1>
+        <p class="lead font-weight-normal">Начните свой день с собственного графика</p>
+        <br>
+        <!-- Отображение если пользователь авторизован -->
+        {% if current_user.is_authenticated %}
+        <p class="lead font-weight-normal">Добро пожаловать, {{ current_user.username}}</p>
+        <!-- Отображение если пользователь не имеет должности -->
+        {% if session['role'] == None %}
+        <p class="lead font-weight-normal"> Дождитесь активации аккаунта!</p>
+        {% endif %}
+        {% else %}
+        <p class="lead font-weight-normal">Войдите в аккаунт для дальнейших действий</p>
+        <a class="btn btn-lg btn-info" href="{{ url_for('login_page') }}">Выполнить вход</a>
+        <a class="btn btn-lg btn-info" href="{{ url_for('register_page') }}">Регистрация</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

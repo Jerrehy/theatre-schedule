@@ -1,0 +1,37 @@
+<!-- Страниц авторизации пользователя -->
+<!-- Подключение шаблона-фундамента для страницы -->
+{% extends 'base.html' %}
+
+{% block title %}
+Страница входа
+{% endblock %}
+
+{% block content %}
+   <div class="container">
+        <form method="POST" class="form-signin" style="color:white">
+            {{ form.hidden_tag() }}
+            <h1 class="h3 mb-3 font-weight-normal">
+                Выполните вход
+            </h1>
+            <!-- Подключение полей для ввода информации о пользователе при аворизации -->
+            <br>
+            {{ form.username.label() }}
+            {{ form.username(class="form-control", placeholder="Логин") }}
+
+            {{ form.password.label() }}
+            {{ form.password(class="form-control", placeholder="Пароль") }}
+
+            <br>
+
+            <!-- Кнопка переключения на страницу регистрации -->
+            <div class="checkbox mb-3">
+               <h6>У вас ещё нет аккаунта?</h6>
+               <a class="btn btn-sm btn-secondary" href="{{ url_for('register_page') }}">Регистрация</a>
+            </div>
+
+            <!-- Кнопка для обработки ввёденной информации при авторизации -->
+            {{ form.submit(class="btn btn-lg btn-block btn-primary") }}
+
+        </form>
+    </div>
+{% endblock %}

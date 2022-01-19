@@ -1,0 +1,21 @@
+<!-- Страница профиля пользователя -->
+<!-- Подключение шаблона-фундамента для страницы -->
+{% extends 'base.html' %}
+{% block title %}
+Стартовая страница
+{% endblock %}
+<!-- Отображение информации об авторизованном пользователе -->
+{% block content %}
+<div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-left bg-dark" style="color:white">
+    <div class="col-md-5 p-lg-5 mx-auto my-5">
+        <h1 class="display-4 font-weight-normal">Профиль пользователя</h1>
+        <br>
+        <p class="lead font-weight-normal">ФИО сотрудника: {{ employee.fio}}</p>
+        <p class="lead font-weight-normal">Должность: {{ employee.position.position_name }}</p>
+        <p class="lead font-weight-normal">День рождения: {{ employee.birthday}}</p>
+        <p class="lead font-weight-normal">Мобильный номер телефона: {{ employee.mobile_number}}</p>
+        <p class="lead font-weight-normal">Домашний номер телефона: {{ employee.home_phone_number}}</p>
+        <p class="lead font-weight-normal">Адрес: {{employee.adress}}</p>
+    </div>
+</div>
+{% endblock %}

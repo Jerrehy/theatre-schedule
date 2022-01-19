@@ -1,0 +1,85 @@
+<!-- Страница информации о сотрудниках -->
+<!-- Подключение шаблона-фундамента для страницы -->
+{% extends 'base.html' %}
+{% block title %}
+Страница сотрудников
+{% endblock %}
+<!-- Оформление информационного блока -->
+{% block content %}
+<div class="row" style="margin-top:20px; margin-left:20px">
+   <div class="col-8">
+      <h2>Список сотрудников</h2>
+      <br>
+      <!-- Формирование таблицы пользователей -->
+      <table class="table table-responsive table-hover table-info table-striped">
+         <thead>
+            <tr>
+               <th scope="col">Персональный номер сотрудника</th>
+               <th scope="col">ФИО сотрудника</th>
+               <th scope="col">День рождения сотрудника</th>
+               <th scope="col">Мобильный номер телефона</th>
+               <th scope="col">Домашний номер телефона</th>
+               <th scope="col">Адрес</th>
+               <th scope="col">Должность</th>
+            </tr>
+         </thead>
+         <tbody>
+            {% for employee in employers %}
+            <tr>
+               <td>{{ employee.personal_number }}</td>
+               <td>{{ employee.fio }}</td>
+               <td>{{ employee.birthday }}</td>
+               <td>{{ employee.mobile_number }}</td>
+               <td>{{ employee.home_phone_number }}</td>
+               <td>{{ employee.adress }}</td>
+               <td>{{ employee.position.position_name }}</td>
+            </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+   </div>
+   <div class="col-2">
+      <!-- Формирование таблицы методов -->
+      <table class="table table-responsive">
+         <tbody>
+            <tr>
+               <th>
+                  <form class="form" action="{{url_for('employee')}}" method="POST">
+                     {{change_form.hidden_tag()}}
+                     <p>
+                     {{change_form.position_name.label(class="form-control-label text-light")}}
+                     {{change_form.position_name(class="form-control form-control-sm")}}
+                     </p>
+                     <p>
+                     {{change_form.employee_fio.label(class="form-control-label text-light")}}
+                     {{change_form.employee_fio(class="form-control form-control-sm")}}
+                     </p>
+                     <p>{{change_form.submit_up_empl(class="btn btn-info")}}</p>
+                     <p>{{change_form.submit_del_mpl(class="btn btn-danger")}}</p>
+                  </form>
+               </th>
+               <!-- Формирование таблицы списка должностей -->
+               <div class="col-3">
+                  <h2>Список должностей</h2>
+                  <br>
+                  <table class="table table-responsive table-hover table-info table-striped">
+                     <thead>
+                        <tr align="center">
+                           <th scope="col">Именование должности</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        {% for position in positions %}
+                        <tr align="center">
+                           <td>{{ position.position_name }}</td>
+                        </tr>
+                        {% endfor %}
+                     </tbody>
+                  </table>
+               </div>
+            </tr>  
+         </tbody>
+      </table>
+   </div>
+</div>
+{% endblock %}

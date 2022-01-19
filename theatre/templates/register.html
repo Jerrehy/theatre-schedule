@@ -1,0 +1,56 @@
+<!-- Страница регистрации пользователя -->
+<!-- Подключение шаблона-фундамента для страницы -->
+{% extends 'base.html' %}
+
+{% block title %}
+Страница регистрации
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <h1 class="h3 mb-3 font-weight-normal text-center">
+            Регистрация нового сотрудника
+        </h1>
+        <br>
+        <!-- Подключение полей для ввода информации о пользователе при регистрации -->
+        <form method="POST" class="form-register" style="color:white">
+            {{ form.hidden_tag() }}
+
+            {{ form.username.label() }}
+            {{ form.username(class="form-control", placeholder="Логин") }}
+
+            {{ form.fio.label() }}
+            {{ form.fio(class="form-control", placeholder="Фамилия Имя Отчество") }}
+
+            {{ form.birthday.label() }}
+            {{ form.birthday(class="form-control", placeholder="Год-Месяц-День") }}
+
+            {{ form.mobile_number.label() }}
+            {{ form.mobile_number(class="form-control", placeholder="Мобильный телефон") }}
+
+            {{ form.home_phone_number.label() }}
+            {{ form.home_phone_number(class="form-control", placeholder="Домашний телефон") }}
+
+            {{ form.adress.label() }}
+            {{ form.adress(class="form-control", placeholder="Адрес") }}
+
+            {{ form.password1.label() }}
+            {{ form.password1(class="form-control", placeholder="Пароль") }}
+
+            {{ form.password2.label() }}
+            {{ form.password2(class="form-control", placeholder="Подтвердить пароль") }}
+
+            <br>
+
+            <div class="checkbox mb-3">
+               <h6>Уже есть аккаунт?</h6>
+               <a class="btn btn-sm btn-secondary" href="{{ url_for('login_page') }}">Выполнить вход</a>
+            </div>
+
+            {{ form.submit(class="btn btn-lg btn-block btn-primary") }}
+
+        </form>
+    </div>
+
+{% endblock %}

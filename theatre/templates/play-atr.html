@@ -1,0 +1,156 @@
+<!-- Страница информации о спектаклях: жанр и автор -->
+<!-- Подключение шаблона-фундамента для страницы -->
+{% extends 'base.html' %}
+{% block title %}
+Страница жанров и авторов
+{% endblock %}
+<!-- Оформление информационного блока -->
+{% block content %}
+<!-- Формирование таблицы авторов -->
+<div class="row" style="margin-top:20px; margin-left:20px">
+   <div class="col-8">
+      <h2>Список авторов, создавших театральные произведения</h2>
+      <br>
+      <table class="table table-hover table-info table-striped">
+         <thead>
+            <tr align="center">
+               <th scope="col">ФИО автора</th>
+               <th scope="col">День рождения автора</th>
+            </tr>
+         </thead>
+         <tbody>
+            {% for author in authors %}
+            <tr align="center">
+               <td>{{ author.author_fio }}</td>
+               <td>{{ author.author_birthday_year }}</td>
+            </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+   </div>
+   <!-- Оформление блока для действий с авторами -->
+   <div class="col-2">
+      <h2>Действия с авторами</h2>
+      <br>
+      <table class="table">
+         <tbody>
+            <tr>
+               <th>
+                  <div class="form">
+                     <button type="button" class="btn btn-success" data-toggle="modal"
+                        data-target="#ModalAddAuthor">Добавить автора</button>
+                  </div>
+                  <br>
+                  <form class="form" action="{{url_for('play_atr')}}" method="POST">
+                     {{delete_author_form.hidden_tag()}}
+                     <p>
+                     {{delete_author_form.author_fio.label(class="form-control-label text-light")}}
+                     {{delete_author_form.author_fio(class="form-control form-control-sm")}}
+                     </p>
+                     <p>{{delete_author_form.submit_del_author(class="btn btn-danger")}}</p>
+                  </form>
+               </th>
+            </tr>
+         </tbody>
+      </table>
+   </div>
+</div>
+<!-- Формирование таблицы жанров -->
+<div class="row" style="margin-top:20px; margin-left:20px">
+   <div class="col-4">
+      <h2>Жанры спектаклей нашего театра</h2>
+      <br>
+      <table class="table table-hover table-info table-striped">
+         <thead>
+            <tr align="center">
+               <th scope="col">Название жанра</th>
+            </tr>
+         </thead>
+         <tbody>
+            {% for genre in genres %}
+            <tr align="center">
+               <td>{{ genre.genre_name }}</td>
+            </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+   </div>
+   <!-- Оформление блока для действий с жанрами -->
+   <div class="col-2">
+      <h2>Действия с жанрами</h2>
+      <br>
+      <table class="table">
+         <tbody>
+            <tr>
+               <th>
+                  <div class="form">
+                     <button type="button" class="btn btn-success" data-toggle="modal"
+                        data-target="#ModalAddGenre">Добавить жанр</button>
+                  </div>
+                  <br>
+                  <form class="form" action="{{url_for('play_atr')}}" method="POST">
+                     {{delete_genre_form.hidden_tag()}}
+                     <p>
+                     {{delete_genre_form.genre_name.label(class="form-control-label text-light")}}
+                     {{delete_genre_form.genre_name(class="form-control form-control-sm")}}
+                     </p>
+                     <p>{{delete_genre_form.submit_del_genre(class="btn btn-danger")}}</p>
+                  </form>
+               </th>
+            </tr>
+         </tbody>
+      </table>
+   </div>
+</div>
+<!-- Модал для добавления автора -->
+<div id="ModalAddAuthor" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h4 class="modal-title text-secondary">Добавление нового спектакля</h4>
+         </div>
+         <div class="modal-body">
+            <form method="POST" class="form-addding" style="color:black">
+               {{ add_author_form.hidden_tag() }}
+
+               {{ add_author_form.author_fio.label() }}
+               {{ add_author_form.author_fio(class="form-control") }}
+
+               {{ add_author_form.author_birthday_year.label() }}
+               {{ add_author_form.author_birthday_year(class="form-control") }}
+
+               <br>
+               {{ add_author_form.submit_add_author(class="btn btn-lg btn-block btn-primary") }}
+            </form>
+         </div>
+      </div>
+      <div class="modal-footer">
+         <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+      </div>
+   </div>
+</div>
+<!-- Модал для добавления жанра -->
+<div id="ModalAddGenre" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h4 class="modal-title text-secondary">Добавление нового спектакля</h4>
+         </div>
+         <div class="modal-body">
+            <form method="POST" class="form-addding" style="color:black">
+               {{ add_genre_form.hidden_tag() }}
+
+               {{ add_genre_form.genre_name.label() }}
+               {{ add_genre_form.genre_name(class="form-control") }}
+
+               <br>
+               {{ add_genre_form.submit_add_genre(class="btn btn-lg btn-block btn-primary") }}
+            </form>
+         </div>
+      </div>
+      <div class="modal-footer">
+         <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+      </div>
+   </div>
+</div>
+{% endblock %}
