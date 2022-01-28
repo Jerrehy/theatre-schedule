@@ -1,0 +1,141 @@
+<!-- Страница с расписанием -->
+<!-- Подключение шаблона-фундамента для страницы -->
+{% extends 'base.html' %}
+{% block title %}
+Расписание актёров и спектаклей
+{% endblock %}
+<!-- Оформление информационного блока -->
+{% block content %}
+<!-- Формирование таблицы с расписанием сотрудников -->
+<div class="row" style="margin-top:20px; margin-left:20px">
+   <div class="col-8">
+      <h2>Расписание сотрудников</h2>
+      <br>
+      <table id="data" class="table table-hover table-bordered table-info table-striped">
+         <thead>
+            <tr>
+               <th scope="col">Название спектакля</th>
+               <th scope="col">Год постановки</th>
+               <th scope="col">Дата и время</th>
+               <th scope="col">Номер зала</th>
+               <th scope="col">ФИО актёра</th>
+               <th scope="col">Роль в спектакле</th>
+               <th scope="col">Должность сотрудника</th>
+            </tr>
+         </thead>
+         <tbody>
+            {% for role in roles %}
+            <tr>
+               <td>{{ role.name_play }}</td>
+               <td>{{ role.stage_year }}</td>
+               <td>{{ role.date_and_time }}</td>
+               <td>{{ role.hall_number }}</td>
+               <td>{{ role.employee.fio }}</td>
+               <td>{{ role.name_role }}</td>
+               <td>{{ role.employee.position.position_name }}</td>
+            </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+   </div>
+   <!-- Оформление блока для действий с расписанием сотрудников -->
+   {% if session['role'] == 7 %}
+   <div class="col-3">
+      <h2>Действия с сотрудниками в расписании</h2>
+      <br>
+      <table class="table table-striped">
+         <tbody>
+            <tr>
+               <th>
+                  <form method="POST" class="form" action="{{url_for('route_schedule_employee.schedule_employee')}}">
+                     {{ add_schedule_role_form.hidden_tag() }}
+
+                     {{ add_schedule_role_form.name_session.label(class="form-control-label text-light") }}
+                     {{ add_schedule_role_form.name_session(class="form-control form-control-sm", onchange="submit()") }}
+   
+                     {{ add_schedule_role_form.stage_year_session.label(class="form-control-label text-light") }}
+                     {{ add_schedule_role_form.stage_year_session(class="form-control form-control-sm", onchange="submit()") }}
+   
+                     {{ add_schedule_role_form.actor.label(class="form-control-label text-light") }}
+                     {{ add_schedule_role_form.actor(class="form-control form-control-sm") }}
+   
+                     {{ add_schedule_role_form.date_time_session.label(class="form-control-label text-light") }}
+                     {{ add_schedule_role_form.date_time_session(class="form-control form-control-sm") }}
+   
+                     {{ add_schedule_role_form.role_in_play.label(class="form-control-label text-light") }}
+                     {{ add_schedule_role_form.role_in_play(class="form-control form-control-sm") }}
+   
+                     <br>
+                     {{ add_schedule_role_form.submit_add_role(class="btn btn-success") }}
+                  </form>
+                  <br>
+                  <form class="form" action="{{url_for('route_schedule_employee.schedule_employee')}}" method="POST">
+                     {{role_form.hidden_tag()}}
+                     
+                     <p>
+                        {{role_form.session_name.label(class="form-control-label text-light")}}
+                        {{role_form.session_name(class="form-control form-control-sm", onchange="submit()")}}  
+                     </p>
+                     <p>
+                        {{role_form.stage_year.label(class="form-control-label text-light")}}
+                        {{role_form.stage_year(class="form-control form-control-sm", onchange="submit()")}}  
+                     </p>
+                     <p>
+                        {{role_form.date_time_session.label(class="form-control-label text-light")}}
+                        {{role_form.date_time_session(class="form-control form-control-sm")}}
+                     </p>
+                     <p>
+                        {{role_form.employee_fio.label(class="form-control-label text-light")}}
+                        {{role_form.employee_fio(class="form-control form-control-sm")}}
+                     </p>
+                     <p>{{role_form.submit_del_role(class="btn btn-danger")}}</p>
+                  </form>
+               </th>
+            </tr>
+         </tbody>
+      </table>
+   </div>
+   {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+   $(document).ready(function () {
+      $("#data").DataTable(
+         {
+            columns: [
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true }
+            ],
+            language: {
+               "processing": "Подождите...",
+               "search": "Поиск:",
+               "lengthMenu": "Показать _MENU_ записей",
+               "info": "Записи с _START_ до _END_ из _TOTAL_ записей",
+               "infoEmpty": "Записи с 0 до 0 из 0 записей",
+               "infoFiltered": "(отфильтровано из _MAX_ записей)",
+               "infoPostFix": "",
+               "loadingRecords": "Загрузка записей...",
+               "zeroRecords": "Записи отсутствуют.",
+               "emptyTable": "В таблице отсутствуют данные",
+               "paginate": {
+                  "first": "Первая",
+                  "previous": "Предыдущая",
+                  "next": "Следующая",
+                  "last": "Последняя"
+               },
+               "aria": {
+                  "sortAscending": ": активировать для сортировки столбца по возрастанию",
+                  "sortDescending": ": активировать для сортировки столбца по убыванию"
+               }
+            }
+         });
+   });
+</script>
+{% endblock %}

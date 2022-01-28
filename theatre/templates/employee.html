@@ -11,7 +11,7 @@
       <h2>Список сотрудников</h2>
       <br>
       <!-- Формирование таблицы пользователей -->
-      <table class="table table-responsive table-hover table-info table-striped">
+      <table id="data" class="table table-hover table-bordered table-info table-striped">
          <thead>
             <tr>
                <th scope="col">Персональный номер сотрудника</th>
@@ -40,11 +40,11 @@
    </div>
    <div class="col-2">
       <!-- Формирование таблицы методов -->
-      <table class="table table-responsive">
+      <table class="table table-striped">
          <tbody>
             <tr>
                <th>
-                  <form class="form" action="{{url_for('employee')}}" method="POST">
+                  <form class="form" action="{{url_for('admin.employee')}}" method="POST">
                      {{change_form.hidden_tag()}}
                      <p>
                      {{change_form.position_name.label(class="form-control-label text-light")}}
@@ -62,7 +62,7 @@
                <div class="col-3">
                   <h2>Список должностей</h2>
                   <br>
-                  <table class="table table-responsive table-hover table-info table-striped">
+                  <table class="table table-hover table-info table-striped">
                      <thead>
                         <tr align="center">
                            <th scope="col">Именование должности</th>
@@ -82,4 +82,45 @@
       </table>
    </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+   $(document).ready(function () {
+      $("#data").DataTable(
+         {
+            columns: [
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true }
+            ],
+            language: {
+               "processing": "Подождите...",
+               "search": "Поиск:",
+               "lengthMenu": "Показать _MENU_ записей",
+               "info": "Записи с _START_ до _END_ из _TOTAL_ записей",
+               "infoEmpty": "Записи с 0 до 0 из 0 записей",
+               "infoFiltered": "(отфильтровано из _MAX_ записей)",
+               "infoPostFix": "",
+               "loadingRecords": "Загрузка записей...",
+               "zeroRecords": "Записи отсутствуют.",
+               "emptyTable": "В таблице отсутствуют данные",
+               "paginate": {
+                  "first": "Первая",
+                  "previous": "Предыдущая",
+                  "next": "Следующая",
+                  "last": "Последняя"
+               },
+               "aria": {
+                  "sortAscending": ": активировать для сортировки столбца по возрастанию",
+                  "sortDescending": ": активировать для сортировки столбца по убыванию"
+               }
+            }
+         });
+   });
+</script>
 {% endblock %}

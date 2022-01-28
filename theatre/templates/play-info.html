@@ -11,7 +11,7 @@
       <h2>Список спектаклей нашего театра</h2>
       <p>Именно с ними наш театр играет постановки</p>
       <br>
-      <table class="table table-responsive table-hover table-info table-striped table-bordered">
+      <table id="data" class="table table-hover table-bordered table-info table-striped">
          <thead>
             <tr>
                <th scope="col">Название спектакля</th>
@@ -39,23 +39,49 @@
       </table>
    </div>
    <!-- Оформление блока для действий со спектаклями -->
-   <div class="col-2">
+   <div class="col-3">
       <h2>Действия со спекталями</h2>
       <br>
-      <table class="table table-responsive table-hover">
+      <table class="table table-striped">
          <tbody>
             <tr>
                <td>
-                  <div class="form">
-                     <button type="button" class="btn btn-success" data-toggle="modal"
-                        data-target="#ModalAddPLay">Добавить спектакль</button>
-                  </div>
+                  <form method="POST" class="form" action="{{url_for('route_play_info.play_info')}}">
+                     {{ add_play_form.hidden_tag() }}
+      
+                     {{ add_play_form.name_play.label(class="form-control-label text-light") }}
+                     {{ add_play_form.name_play(class="form-control form-control-sm") }}
+      
+                     {{ add_play_form.stage_year.label(class="form-control-label text-light") }}
+                     {{ add_play_form.stage_year(class="form-control form-control-sm") }}
+      
+                     {{ add_play_form.acts_number.label(class="form-control-label text-light") }}
+                     {{ add_play_form.acts_number(class="form-control form-control-sm") }}
+      
+                     {{ add_play_form.discription.label(class="form-control-label text-light") }}
+                     {{ add_play_form.discription(class="form-control form-control-sm") }}
+      
+                     {{ add_play_form.genre_name.label(class="form-control-label text-light") }}
+                     {{ add_play_form.genre_name(class="form-control form-control-sm") }}
+      
+                     {{ add_play_form.author_fio.label(class="form-control-label text-light") }}
+                     {{ add_play_form.author_fio(class="form-control form-control-sm") }}
+      
+                     <br>
+                     {{ add_play_form.submit_add_play(class="btn btn-success") }}
+                  </form>
                   <br>
-                  <form class="form" action="{{url_for('play_info')}}" method="POST">
+                  <form class="form" action="{{url_for('route_play_info.play_info')}}" method="POST">
                      {{change_play_form.hidden_tag()}}
                      <p>
-                     {{change_play_form.name_play.label(class="form-control-label text-light")}}
-                     {{change_play_form.name_play(class="form-control form-control-sm")}}
+                        <form class="form" action="{{url_for('route_play_info.play_info')}}" method="POST"> 
+                           {{change_play_form.name_play.label(class="form-control-label text-light")}}
+                           {{change_play_form.name_play(class="form-control form-control-sm", onchange="submit()")}}
+                        </form>
+                     </p>
+                     <p>
+                     {{change_play_form.stage_year.label(class="form-control-label text-light")}}
+                     {{change_play_form.stage_year(class="form-control form-control-sm")}}
                      </p>
                      <p>{{change_play_form.submit_del_play(class="btn btn-danger")}}</p>
                   </form>
@@ -65,43 +91,45 @@
       </table>
    </div>
 </div>
-<!-- Модал для добавления нового спектакля -->
-<div id="ModalAddPLay" class="modal fade" role="dialog">
-   <div class="modal-dialog">
-      <div class="modal-content">
-         <div class="modal-header">
-            <h4 class="modal-title text-secondary">Добавление нового спектакля</h4>
-         </div>
-         <div class="modal-body">
-            <form method="POST" class="form-addding" style="color:black">
-               {{ add_play_form.hidden_tag() }}
+{% endblock %}
 
-               {{ add_play_form.name_play.label() }}
-               {{ add_play_form.name_play(class="form-control") }}
-
-               {{ add_play_form.stage_year.label() }}
-               {{ add_play_form.stage_year(class="form-control") }}
-
-               {{ add_play_form.acts_number.label() }}
-               {{ add_play_form.acts_number(class="form-control") }}
-
-               {{ add_play_form.discription.label() }}
-               {{ add_play_form.discription(class="form-control") }}
-
-               {{ add_play_form.genre_name.label() }}
-               {{ add_play_form.genre_name(class="form-control") }}
-
-               {{ add_play_form.author_fio.label() }}
-               {{ add_play_form.author_fio(class="form-control") }}
-
-               <br>
-               {{ add_play_form.submit_add_play(class="btn btn-lg btn-block btn-primary") }}
-            </form>
-         </div>
-      </div>
-      <div class="modal-footer">
-         <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-      </div>
-   </div>
-</div>
+{% block scripts %}
+<script>
+   $(document).ready(function () {
+      $("#data").DataTable(
+         {
+            columns: [
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true }
+            ],
+            language: {
+               "processing": "Подождите...",
+               "search": "Поиск:",
+               "lengthMenu": "Показать _MENU_ записей",
+               "info": "Записи с _START_ до _END_ из _TOTAL_ записей",
+               "infoEmpty": "Записи с 0 до 0 из 0 записей",
+               "infoFiltered": "(отфильтровано из _MAX_ записей)",
+               "infoPostFix": "",
+               "loadingRecords": "Загрузка записей...",
+               "zeroRecords": "Записи отсутствуют.",
+               "emptyTable": "В таблице отсутствуют данные",
+               "paginate": {
+                  "first": "Первая",
+                  "previous": "Предыдущая",
+                  "next": "Следующая",
+                  "last": "Последняя"
+               },
+               "aria": {
+                  "sortAscending": ": активировать для сортировки столбца по возрастанию",
+                  "sortDescending": ": активировать для сортировки столбца по убыванию"
+               }
+            }
+         });
+   });
+</script>
 {% endblock %}

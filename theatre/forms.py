@@ -2,23 +2,19 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField, DateField, DateTimeField, SelectField, \
     IntegerField
 from wtforms.validators import ValidationError, Length, EqualTo, DataRequired, NumberRange
-from theatre.models import Employee, Base
-from theatre import db
-
-# Механизм копирования данных из базы
-Base.prepare(db.engine, reflect=True)
+from theatre.models import Employee
 
 
 # Форма регистрации на сайте
 class RegisterForm(FlaskForm):
     # Проверка наличия совпадений имён пользователей при создании нового пользователя
     def validate_username(self, username_to_check):
-        user = db.session.query(Employee).filter_by(username=username_to_check.data).first()
+        user = Employee.get_employee_for_username(username_to_check.data)
         if user:
             raise ValidationError('Такое имя пользователя уже есть! Попробуйте придумать другое')
 
     def validate_fio(self, fio_to_check):
-        fio = db.session.query(Employee).filter_by(fio=fio_to_check.data).first()
+        fio = Employee.get_employee_for_fio(fio_to_check.data)
         if fio:
             raise ValidationError('У такого человека уже существует аккаунт! '
                                   'Если пароль и логин забыты, то обратитесь к администратору')
@@ -52,7 +48,7 @@ class AddPlay(FlaskForm):
     name_play = StringField('Название спектакля', validators=[Length(max=40), DataRequired()])
     stage_year = IntegerField('Год постановки', validators=[NumberRange(max=2022), DataRequired()])
     acts_number = IntegerField('Количество актов', validators=[NumberRange(max=10), DataRequired()])
-    discription = StringField('Описание спектакля', validators=[Length(max=50), DataRequired()])
+    discription = TextAreaField('Описание спектакля', validators=[Length(max=50), DataRequired()])
     genre_name = SelectField('Название жанра', choices=[])
     author_fio = SelectField('ФИО автора', choices=[])
     submit_add_play = SubmitField(label='Добавить спектакль')
@@ -61,6 +57,7 @@ class AddPlay(FlaskForm):
 # Форма добавления сеанса в расписание
 class AddSession(FlaskForm):
     name_session = SelectField('Название спектакля', choices=[])
+    stage_year_session = SelectField('Год постановки', choices=[])
     type_session = SelectField('Тип', choices=['Спектакль', 'Репетиция'])
     date_time_session = DateTimeField('Дата и время', format='%Y-%m-%d %H:%M:%S')
     hall_number = SelectField('Номер зала', choices=[1, 2, 3, 4, 5, 6])
@@ -70,6 +67,7 @@ class AddSession(FlaskForm):
 # Форма добавления новой позиции в расписании актёра
 class AddRoleSchedule(FlaskForm):
     name_session = SelectField('Название спектакля', choices=[])
+    stage_year_session = SelectField('Год постановки', choices=[])
     date_time_session = SelectField('Дата и время', choices=[])
     actor = SelectField('ФИО актёра', choices=[])
     role_in_play = StringField('Роль в спектакле', validators=[Length(max=40)])
@@ -79,6 +77,7 @@ class AddRoleSchedule(FlaskForm):
 # Форма удаления спектакля из базы
 class ChangePlay(FlaskForm):
     name_play = SelectField('Название спектакля', choices=[])
+    stage_year = SelectField('Год постановки', choices=[])
     submit_del_play = SubmitField(label='Удалить спектакль')
 
 
@@ -118,6 +117,7 @@ class ChangeEmployee(FlaskForm):
 # Форма удаления сеанса из базы
 class ChangeSession(FlaskForm):
     session_name = SelectField('Название спектакля', choices=[])
+    stage_year = SelectField('Год постановки', choices=[])
     date_time_session = SelectField('Время сеанса', choices=[])
     hall_number = SelectField('Номер зала', choices=[])
     submit_del_ses = SubmitField(label="Удалить сеанс")
@@ -126,6 +126,16 @@ class ChangeSession(FlaskForm):
 # Форма удаления позиции из расписания актёров
 class RoleEmployee(FlaskForm):
     session_name = SelectField('Название спектакля', choices=[])
+    stage_year = SelectField('Год постановки', choices=[])
     date_time_session = SelectField('Время сеанса', choices=[])
-    employee_fio = SelectField('ФИО актёра', choices=[])
+    employee_fio = SelectField('ФИО сотрудника', choices=[])
     submit_del_role = SubmitField(label="Удалить позицию в расписании")
+
+
+class EmployeeUpdate(FlaskForm):
+    employee_fio = TextAreaField(label='Новое ФИО', validators=[DataRequired()])
+    birthday = DateField(label='Новая дата рождения', validators=[DataRequired()])
+    mobile_phone_number = StringField(label='Новый мобильный телефон')
+    home_phone_number = StringField(label='Новый домашний телефон')
+    address = TextAreaField(label='Новый адрес', validators=[DataRequired()])
+    submit_employee_update = SubmitField(label="Подтвердить изменения", validators=[DataRequired()])

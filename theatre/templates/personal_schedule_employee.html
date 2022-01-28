@@ -1,0 +1,79 @@
+<!-- Страница с расписанием -->
+<!-- Подключение шаблона-фундамента для страницы -->
+{% extends 'base.html' %}
+{% block title %}
+Расписание актёров и спектаклей
+{% endblock %}
+<!-- Оформление информационного блока -->
+{% block content %}
+<!-- Формирование таблицы с расписанием сотрудников -->
+<div class="row" style="margin-top:20px; margin-left:20px">
+   <div class="col-8">
+      <h2>Моё расписание</h2>
+      <br>
+      <table id="data" class="table table-hover table-bordered table-info table-striped">
+         <thead>
+            <tr>
+               <th scope="col">Название спектакля</th>
+               <th scope="col">Год постановки</th>
+               <th scope="col">Дата и время</th>
+               <th scope="col">Номер зала</th>
+               <th scope="col">ФИО актёра</th>
+               <th scope="col">Роль в спектакле</th>
+            </tr>
+         </thead>
+         <tbody>
+            {% for role in roles %}
+            <tr>
+               <td>{{ role.name_play }}</td>
+               <td>{{ role.stage_year }}</td>
+               <td>{{ role.date_and_time }}</td>
+               <td>{{ role.hall_number }}</td>
+               <td>{{ role.employee.fio }}</td>
+               <td>{{ role.name_role }}</td>
+            </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+   </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+   $(document).ready(function () {
+      $("#data").DataTable(
+         {
+            columns: [
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true }
+            ],
+            language: {
+               "processing": "Подождите...",
+               "search": "Поиск:",
+               "lengthMenu": "Показать _MENU_ записей",
+               "info": "Записи с _START_ до _END_ из _TOTAL_ записей",
+               "infoEmpty": "Записи с 0 до 0 из 0 записей",
+               "infoFiltered": "(отфильтровано из _MAX_ записей)",
+               "infoPostFix": "",
+               "loadingRecords": "Загрузка записей...",
+               "zeroRecords": "Записи отсутствуют.",
+               "emptyTable": "В таблице отсутствуют данные",
+               "paginate": {
+                  "first": "Первая",
+                  "previous": "Предыдущая",
+                  "next": "Следующая",
+                  "last": "Последняя"
+               },
+               "aria": {
+                  "sortAscending": ": активировать для сортировки столбца по возрастанию",
+                  "sortDescending": ": активировать для сортировки столбца по убыванию"
+               }
+            }
+         });
+   });
+</script>
+{% endblock %}

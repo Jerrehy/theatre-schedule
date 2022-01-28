@@ -16,6 +16,66 @@
         <p class="lead font-weight-normal">Мобильный номер телефона: {{ employee.mobile_number}}</p>
         <p class="lead font-weight-normal">Домашний номер телефона: {{ employee.home_phone_number}}</p>
         <p class="lead font-weight-normal">Адрес: {{employee.adress}}</p>
+        <div class="form">
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalUpdateEmployee">Изменить
+                данные профиля</button>
+        </div>
+    </div>
+</div>
+<div id="ModalUpdateEmployee" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-secondary">Изменение текущей информации о пользователе</h4>
+            </div>
+            <p class="text-secondary">Если информация не меняется вообще, то следует закрыть форму по кнопке</p>
+            <p class="text-secondary">При частичном изменении информации оставшаяся информация копируется в пустые строки</p>
+            <div class="modal-body">
+                <form method="POST" class="form-addding" style="color:black">
+                    {{form_for_employee.hidden_tag()}}
+
+                    <div class="lead font-weight-normal">
+                        <p>Текущее ФИО сотрудника:</p>
+                        <p>{{ employee.fio}}</p>
+                    </div>
+                    {{form_for_employee.employee_fio.label(class="form-control-label")}}
+                    {{form_for_employee.employee_fio(class="form-control") }}
+
+                    <div class="lead font-weight-normal">
+                        <p>Текущий день рождения:</p>
+                        <p>{{employee.birthday}}</p>
+                    </div>
+                    {{form_for_employee.birthday.label(class="form-control-label")}}
+                    {{form_for_employee.birthday(class="form-control") }}
+
+                    <div class="lead font-weight-normal">
+                        <p>Текущий мобильный номер телефона:</p>
+                        <p>{{employee.mobile_number}}</p>
+                    </div>
+                    {{form_for_employee.mobile_phone_number.label(class="form-control-label")}}
+                    {{form_for_employee.mobile_phone_number(class="form-control") }}
+
+                    <div class="lead font-weight-normal">
+                        <p>Текущий домашний номер телефона::</p>
+                        <p>{{ employee.home_phone_number}}</p>
+                    </div>
+                    {{form_for_employee.home_phone_number.label(class="form-control-label")}}
+                    {{form_for_employee.home_phone_number(class="form-control") }}
+
+                    <div class="lead font-weight-normal">
+                        <p>Текущий адрес:</p>
+                        <p>{{employee.adress}}</p>
+                    </div>
+                    {{form_for_employee.address.label(class="form-control-label")}}
+                    {{form_for_employee.address(class="form-control") }}
+
+                    {{form_for_employee.submit_employee_update(class="btn btn-lg btn-block btn-primary")}}
+                </form>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-dark" data-dismiss="modal">Закрыть</button>
+        </div>
     </div>
 </div>
 {% endblock %}

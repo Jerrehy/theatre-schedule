@@ -11,7 +11,7 @@
    <div class="col-8">
       <h2>Список авторов, создавших театральные произведения</h2>
       <br>
-      <table class="table table-hover table-info table-striped">
+      <table id="data" class="table table-hover table-bordered table-info table-striped">
          <thead>
             <tr align="center">
                <th scope="col">ФИО автора</th>
@@ -41,7 +41,7 @@
                         data-target="#ModalAddAuthor">Добавить автора</button>
                   </div>
                   <br>
-                  <form class="form" action="{{url_for('play_atr')}}" method="POST">
+                  <form class="form" action="{{url_for('route_play_atr.play_atr')}}" method="POST">
                      {{delete_author_form.hidden_tag()}}
                      <p>
                      {{delete_author_form.author_fio.label(class="form-control-label text-light")}}
@@ -60,7 +60,7 @@
    <div class="col-4">
       <h2>Жанры спектаклей нашего театра</h2>
       <br>
-      <table class="table table-hover table-info table-striped">
+      <table id="genre" class="table table-hover table-info table-striped">
          <thead>
             <tr align="center">
                <th scope="col">Название жанра</th>
@@ -79,7 +79,7 @@
    <div class="col-2">
       <h2>Действия с жанрами</h2>
       <br>
-      <table class="table">
+      <table class="table table-striped">
          <tbody>
             <tr>
                <th>
@@ -88,7 +88,7 @@
                         data-target="#ModalAddGenre">Добавить жанр</button>
                   </div>
                   <br>
-                  <form class="form" action="{{url_for('play_atr')}}" method="POST">
+                  <form class="form" action="{{url_for('route_play_atr.play_atr')}}" method="POST">
                      {{delete_genre_form.hidden_tag()}}
                      <p>
                      {{delete_genre_form.genre_name.label(class="form-control-label text-light")}}
@@ -125,7 +125,7 @@
          </div>
       </div>
       <div class="modal-footer">
-         <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+         <button type="button" class="btn btn-dark" data-dismiss="modal">Закрыть</button>
       </div>
    </div>
 </div>
@@ -149,8 +149,76 @@
          </div>
       </div>
       <div class="modal-footer">
-         <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+         <button type="button" class="btn btn-dark" data-dismiss="modal">Закрыть</button>
       </div>
    </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+   $(document).ready(function () {
+      $("#data").DataTable(
+         {
+            columns: [
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true }
+            ],
+            language: {
+               "processing": "Подождите...",
+               "search": "Поиск:",
+               "lengthMenu": "Показать _MENU_ записей",
+               "info": "Записи с _START_ до _END_ из _TOTAL_ записей",
+               "infoEmpty": "Записи с 0 до 0 из 0 записей",
+               "infoFiltered": "(отфильтровано из _MAX_ записей)",
+               "infoPostFix": "",
+               "loadingRecords": "Загрузка записей...",
+               "zeroRecords": "Записи отсутствуют.",
+               "emptyTable": "В таблице отсутствуют данные",
+               "paginate": {
+                  "first": "Первая",
+                  "previous": "Предыдущая",
+                  "next": "Следующая",
+                  "last": "Последняя"
+               },
+               "aria": {
+                  "sortAscending": ": активировать для сортировки столбца по возрастанию",
+                  "sortDescending": ": активировать для сортировки столбца по убыванию"
+               }
+            }
+         });
+   });
+</script>
+<script>
+   $(document).ready(function () {
+      $("#genre").DataTable(
+         {
+            columns: [
+               { orderable: true, searchable: true }
+            ],
+            language: {
+               "processing": "Подождите...",
+               "search": "Поиск:",
+               "lengthMenu": "Показать _MENU_ записей",
+               "info": "Записи с _START_ до _END_ из _TOTAL_ записей",
+               "infoEmpty": "Записи с 0 до 0 из 0 записей",
+               "infoFiltered": "(отфильтровано из _MAX_ записей)",
+               "infoPostFix": "",
+               "loadingRecords": "Загрузка записей...",
+               "zeroRecords": "Записи отсутствуют.",
+               "emptyTable": "В таблице отсутствуют данные",
+               "paginate": {
+                  "first": "Первая",
+                  "previous": "Предыдущая",
+                  "next": "Следующая",
+                  "last": "Последняя"
+               },
+               "aria": {
+                  "sortAscending": ": активировать для сортировки столбца по возрастанию",
+                  "sortDescending": ": активировать для сортировки столбца по убыванию"
+               }
+            }
+         });
+   });
+</script>
 {% endblock %}
