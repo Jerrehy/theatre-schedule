@@ -10,11 +10,11 @@ route_schedule_session = Blueprint('route_schedule_session', __name__, template_
 @login_required
 def schedule_session():
     if session['role'] == 7:
-        # Подключение таблиц
+        # Подключение таблиц с общим расписанием сеансов и расписанием для сотрудников
         tabletop = Schedule.get_schedule()
         plays = PlayInfo.get_all_play_info()
 
-        # Добавление форм для добавления сеанса и позиции в расписании актёров
+        # Добавление форм для добавления сеанса и позиции в расписании сотрудников
         add_session_form = AddSession()
         session_form = ChangeSession()
 
@@ -51,11 +51,13 @@ def schedule_session():
                 return redirect(url_for('route_schedule_session.schedule_session'))
 
             else:
+                # Заполнение списка года постановки спектакля для добавления нового сеанса
                 if add_session_form.name_session.data:
 
                     plays_for_add_form = PlayInfo.get_all_play_info_by_name_play(add_session_form.name_session.data)
                     add_session_form.stage_year_session.choices = list(set([i.stage_year for i in plays_for_add_form]))
 
+                # Заполнение списка выбора года постановки и даты проведения сеанса для удаления
                 elif session_form.session_name.data:
 
                     session_form.stage_year.choices = \
@@ -75,7 +77,7 @@ def schedule_session():
             return render_template('schedule_session.html', schedule=tabletop, session_form=session_form,
                                    add_session_form=add_session_form)
 
-    # Отображение страницы с расписанием без функционала
+    # Если не модератор зашёл в этот узел, то весь функционал недоступен
     elif session['role'] is not None:
         tabletop = Schedule.get_schedule()
         return render_template('schedule_session.html', schedule=tabletop)

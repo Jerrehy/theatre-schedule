@@ -65,7 +65,10 @@
                      {{ add_play_form.genre_name(class="form-control form-control-sm") }}
       
                      {{ add_play_form.author_fio.label(class="form-control-label text-light") }}
-                     {{ add_play_form.author_fio(class="form-control form-control-sm") }}
+                     {{ add_play_form.author_fio(class="form-control form-control-sm", onchange="submit()") }}
+
+                     {{ add_play_form.author_birthday.label(class="form-control-label text-light") }}
+                     {{ add_play_form.author_birthday(class="form-control form-control-sm") }}
       
                      <br>
                      {{ add_play_form.submit_add_play(class="btn btn-success") }}
@@ -74,14 +77,12 @@
                   <form class="form" action="{{url_for('route_play_info.play_info')}}" method="POST">
                      {{change_play_form.hidden_tag()}}
                      <p>
-                        <form class="form" action="{{url_for('route_play_info.play_info')}}" method="POST"> 
-                           {{change_play_form.name_play.label(class="form-control-label text-light")}}
-                           {{change_play_form.name_play(class="form-control form-control-sm", onchange="submit()")}}
-                        </form>
+                        {{change_play_form.name_play.label(class="form-control-label text-light")}}
+                        {{change_play_form.name_play(class="form-control form-control-sm", onchange="submit()")}}
                      </p>
                      <p>
-                     {{change_play_form.stage_year.label(class="form-control-label text-light")}}
-                     {{change_play_form.stage_year(class="form-control form-control-sm")}}
+                        {{change_play_form.stage_year.label(class="form-control-label text-light")}}
+                        {{change_play_form.stage_year(class="form-control form-control-sm")}}
                      </p>
                      <p>{{change_play_form.submit_del_play(class="btn btn-danger")}}</p>
                   </form>

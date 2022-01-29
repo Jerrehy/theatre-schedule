@@ -39,11 +39,11 @@
       </table>
    </div>
    <div class="col-2">
-      <!-- Формирование таблицы методов -->
       <table class="table table-striped">
          <tbody>
             <tr>
                <th>
+                  <!-- Формирование таблицы действий с сотрудниками -->
                   <form class="form" action="{{url_for('admin.employee')}}" method="POST">
                      {{change_form.hidden_tag()}}
                      <p>
@@ -84,6 +84,7 @@
 </div>
 {% endblock %}
 
+<!-- Скрипт для динамической таблицы: фильтрация, сортировка-->
 {% block scripts %}
 <script>
    $(document).ready(function () {

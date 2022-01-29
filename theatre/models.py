@@ -23,18 +23,23 @@ def load_user(user_id):
 
 
 # Подключение таблиц из базы данных
+
+# Таблица с данными о репертуаре спектаклей
 class PlayInfo(db.Model):
     __tablename__ = 'play_info'
     __table_args__ = {'extend_existing': True}
 
+    # Метод получения всех информации о спектаклях
     @staticmethod
     def get_all_play_info():
         return PlayInfo.query.order_by(PlayInfo.name_play).all()
 
+    # Метод получения всей информации по названию спектакля
     @staticmethod
     def get_all_play_info_by_name_play(name_play):
         return PlayInfo.query.filter_by(name_play=name_play).all()
 
+    # Метод добавления нового спектакля
     @staticmethod
     def add_play_info(name_play, stage_year, acts_number, discription, genre_name, author_fio, author_birthday_year):
         play_to_create = PlayInfo(name_play=name_play, stage_year=stage_year, acts_number=acts_number,
@@ -47,23 +52,27 @@ class PlayInfo(db.Model):
         except:
             DbErrorAdd()
 
+    # Метод удаления спектакля
     @staticmethod
-    def delete_play_info_by_name(name_play):
+    def delete_play_info_by_name_and_stage_year(name_play, stage_year):
         try:
-            PlayInfo.query.filter_by(name_play=name_play).delete()
+            PlayInfo.query.filter_by(name_play=name_play, stage_year=stage_year).delete()
             db.session.commit()
         except:
             DbErrorAdd()
 
 
+# Подключение таблицы жанров
 class Genre(db.Model):
     __tablename__ = 'genre'
     __table_args__ = {'extend_existing': True}
 
+    # Метод получения списка всех жанров
     @staticmethod
     def get_genre():
         return Genre.query.order_by(Genre.genre_name).all()
 
+    # Метод добавления нового жанра
     @staticmethod
     def add_genre(genre_name):
         new_genre = Genre(genre_name=genre_name)
@@ -74,6 +83,7 @@ class Genre(db.Model):
         except:
             DbErrorAdd()
 
+    # Метод удаления жанра из списка
     @staticmethod
     def delete_genre(genre_name):
         try:
@@ -83,18 +93,20 @@ class Genre(db.Model):
             DbErrorDel()
 
 
+# Подключение таблицы авторов
 class Author(db.Model):
     __tablename__ = 'author'
     __table_args__ = {'extend_existing': True}
 
+    # Метод получения всей информации об авторах
     @staticmethod
     def get_author():
         return Author.query.order_by(Author.author_fio).all()
 
+    # Метод получения всех дат по авторам
     @staticmethod
-    def get_author_birthday_year_by_fio(author_fio):
-        author = Author.query.filter_by(author_fio=author_fio).one()
-        return author.author_birthday_year
+    def get_all_author_birthday_year_by_fio(author_fio):
+        return Author.query.filter_by(author_fio=author_fio).all()
 
     @staticmethod
     def delete_author(author_fio):
@@ -114,6 +126,7 @@ class Author(db.Model):
             DbErrorAdd()
 
 
+# Подключение таблицы сотрудников
 class Employee(db.Model, UserMixin):
     __tablename__ = 'employee'
     __table_args__ = {'extend_existing': True}
@@ -175,7 +188,7 @@ class Employee(db.Model, UserMixin):
 
     @staticmethod
     def add_employee(username, fio, birthday, mobile_number, home_phone_number, adress, password):
-        #     Заполнение введённых данных о пользователе
+        # Заполнение введённых данных о пользователе
         user_to_create = Employee(username=username, fio=fio, birthday=birthday, mobile_number=mobile_number,
                                   home_phone_number=home_phone_number, adress=adress, password=password)
 
@@ -188,6 +201,7 @@ class Employee(db.Model, UserMixin):
             return redirect(url_for('auth.register_page'))
 
 
+# Подключение таблицы со списком ролей
 class Position(db.Model):
     __tablename__ = 'position'
     __table_args__ = {'extend_existing': True}
@@ -202,6 +216,7 @@ class Position(db.Model):
         return position.id_position
 
 
+# Подключение таблицы с общим расписанием сеансов
 class Schedule(db.Model):
     __tablename__ = 'schedule'
     __table_args__ = {'extend_existing': True}
@@ -240,6 +255,7 @@ class Schedule(db.Model):
             DbErrorAdd()
 
 
+# Подключение таблицы с расписанием сотрудников
 class ActorRole(db.Model):
     __tablename__ = 'actor_role'
     __table_args__ = {'extend_existing': True}
@@ -278,4 +294,4 @@ class ActorRole(db.Model):
             db.session.commit()
         except:
             DbErrorDel()
-            return redirect(url_for('moder.schedule_employee'))
+            return redirect(url_for('route_schedule_employee.schedule_employee'))

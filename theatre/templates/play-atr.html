@@ -44,8 +44,12 @@
                   <form class="form" action="{{url_for('route_play_atr.play_atr')}}" method="POST">
                      {{delete_author_form.hidden_tag()}}
                      <p>
-                     {{delete_author_form.author_fio.label(class="form-control-label text-light")}}
-                     {{delete_author_form.author_fio(class="form-control form-control-sm")}}
+                        {{delete_author_form.author_fio.label(class="form-control-label text-light")}}
+                        {{delete_author_form.author_fio(class="form-control form-control-sm", onchange="submit()")}}
+                     </p>
+                     <p>
+                        {{delete_author_form.author_birthday.label(class="form-control-label text-light")}}
+                        {{delete_author_form.author_birthday(class="form-control form-control-sm")}}
                      </p>
                      <p>{{delete_author_form.submit_del_author(class="btn btn-danger")}}</p>
                   </form>

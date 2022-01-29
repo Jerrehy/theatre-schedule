@@ -3,6 +3,7 @@ from theatre.models import Employee, Position
 from theatre.forms import ChangeEmployee
 from flask_login import login_required, current_user
 
+# Создание узла для обращению к функциям админа
 admin = Blueprint('admin', __name__, template_folder="templates")
 
 
@@ -35,8 +36,10 @@ def employee():
                 Employee.update_employee_by_fio(change_form.employee_fio.data, change_form.position_name.data)
                 return redirect(url_for('admin.employee'))
 
+        # возвращение html шаблона с работниками
         return render_template('employee.html', employers=available_employee, positions=available_position,
                                change_form=change_form)
 
     else:
+        # если пользователь не зарегистрирован, то он попадает на главную страницу
         return redirect(url_for('user.home_page'))

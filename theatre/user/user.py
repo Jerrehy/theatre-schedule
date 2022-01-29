@@ -14,14 +14,16 @@ def home_page():
 
 
 # Страница профиля пользователя
-# Ко всем последующим страницам подключен механизм проверки авторизации
-# Декоратор @login_required
+# Декоратор @login_required для доступа к странице
 @user.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile_page():
+    # Получение информации о пользователе по ID сессии
     employer = Employee.get_employee_by_id(current_user.get_id())
+    # Подключение формы для изменения профиля пользователя
     form_for_employee = EmployeeUpdate()
 
+    # Модуль для изменения профиля пользователя
     if form_for_employee.validate_on_submit():
         Employee.update_info_employee(current_user.get_id(), form_for_employee.employee_fio.data,
                                       form_for_employee.birthday.data, form_for_employee.mobile_phone_number.data,

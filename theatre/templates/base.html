@@ -2,6 +2,7 @@
 <!doctype html>
 <html lang="en">
 
+<!-- Блок для отображения названия страницы-->
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -12,14 +13,11 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.css">
     <title>
     {% block title %}
-
-    {% endblock %}
-
-    </title>
     
+    {% endblock %}
+    </title>
 </head>
 <!-- Блок для создание сайд-бара -->
-
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-primary">
         <a class="navbar-brand" href="{{ url_for('user.home_page') }}">Ганиев Театр</a>
@@ -45,7 +43,7 @@
                     <a class="nav-link" href="{{ url_for('route_schedule_session.schedule_session') }}"> Расписание сеансов </a>
                 </li>
                 {% endif %}
-                <!-- Отображение если пользователь - админ -->
+                <!-- Отображение если пользователь админ -->
                 {% if session['role'] == 8 %}
                 <ul class="navbar-nav">
                     <li class="dropdown">
@@ -118,7 +116,8 @@
     <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.js"></script>
-        
+    
+    <!-- Блок для подлкючение js скрипта-->
     {% block scripts %}
     {% endblock %}
 

@@ -3,6 +3,7 @@ from theatre.models import Employee
 from theatre.forms import RegisterForm, LoginForm
 from flask_login import login_user, logout_user
 
+# Создание узла для обращению к функциям регистрация, авторизации и выхода из аккаунта
 auth = Blueprint('auth', __name__, template_folder="templates")
 
 
@@ -23,6 +24,7 @@ def register_page():
         for err_msg in form.errors.values():
             flash(f'Произошла ошибка при создании нового пользователя: {err_msg}', category='danger')
 
+    # Вовзрашение html шаблона с формой регистрации
     return render_template('register.html', form=form)
 
 
@@ -55,8 +57,12 @@ def login_page():
 # Обнуление переменной session['role'] и возвращение на главную страницу
 @auth.route('/logout')
 def logout_page():
+    # Выход пользователя из аккаунта
     logout_user()
+    # Очистка текущей роли пользователя
     session.pop('role', None)
+    # Очистка куки с дополнительными данными о пользователе
     session.clear()
+
     flash("Вы вышли из аккаунта", category='info')
     return redirect(url_for('user.home_page'))

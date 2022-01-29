@@ -51,6 +51,7 @@ class AddPlay(FlaskForm):
     discription = TextAreaField('Описание спектакля', validators=[Length(max=50), DataRequired()])
     genre_name = SelectField('Название жанра', choices=[])
     author_fio = SelectField('ФИО автора', choices=[])
+    author_birthday = SelectField('Год рождения автора', choices=[])
     submit_add_play = SubmitField(label='Добавить спектакль')
 
 
@@ -84,6 +85,7 @@ class ChangePlay(FlaskForm):
 # Форма удаления автора из базы
 class DeleteAuthor(FlaskForm):
     author_fio = SelectField('ФИО автора', choices=[])
+    author_birthday = SelectField('Год рождения автора', choices=[])
     submit_del_author = SubmitField(label='Удалить автора')
 
 
@@ -132,6 +134,7 @@ class RoleEmployee(FlaskForm):
     submit_del_role = SubmitField(label="Удалить позицию в расписании")
 
 
+# Форма редактирования профиля пользователя
 class EmployeeUpdate(FlaskForm):
     employee_fio = TextAreaField(label='Новое ФИО', validators=[DataRequired()])
     birthday = DateField(label='Новая дата рождения', validators=[DataRequired()])
