@@ -108,6 +108,7 @@ class Author(db.Model):
     def get_all_author_birthday_year_by_fio(author_fio):
         return Author.query.filter_by(author_fio=author_fio).all()
 
+    # Метод удаления автора
     @staticmethod
     def delete_author(author_fio):
         try:
@@ -116,6 +117,7 @@ class Author(db.Model):
         except:
             DbErrorDel()
 
+    # Метод добавления нового автора
     @staticmethod
     def add_author(author_fio, author_birthday_year):
         new_author = Author(author_fio=author_fio, author_birthday_year=author_birthday_year)
@@ -131,29 +133,36 @@ class Employee(db.Model, UserMixin):
     __tablename__ = 'employee'
     __table_args__ = {'extend_existing': True}
 
+    # Создание связи по внешней ссылке
     employee_position = db.relationship('EmployeePosition', backref='employee_position', uselist=False)
+
     personal_number = db.Column(db.Integer(), primary_key=True)
 
     # Метод получения ID пользователя из таблицы
     def get_id(self):
         return self.personal_number
 
+    # Метод получения всей информации о сотрудниках
     @staticmethod
     def get_employee():
         return Employee.query.order_by(Employee.fio).all()
 
+    # Метод получения информации о сотруднике по его персональному номеру
     @staticmethod
     def get_employee_by_id(id_user):
         return Employee.query.filter_by(personal_number=id_user).first()
 
+    # Методу получения информации о сотруднике по его логину в системе
     @staticmethod
     def get_employee_by_username(username):
         return Employee.query.filter_by(username=username).first()
 
+    # Метод получения информации о сотруднике по его фамилии
     @staticmethod
     def get_employee_by_fio(fio):
         return Employee.query.filter_by(fio=fio).first()
 
+    # Метод удаления аккаунта сотрудника
     @staticmethod
     def delete_employee_by_fio(fio):
         try:
@@ -162,6 +171,7 @@ class Employee(db.Model, UserMixin):
         except:
             DbErrorAdd()
 
+    # Метод изменения информации о сотруднике
     @staticmethod
     def update_info_employee(employee_id, fio, birthday, mobile_phone, home_phone, address):
         try:
@@ -175,6 +185,7 @@ class Employee(db.Model, UserMixin):
         except:
             DbErrorAdd()
 
+    # Метод добавления нового сотрудника
     @staticmethod
     def add_employee(username, fio, birthday, mobile_number, home_phone_number, adress, password):
         # Заполнение введённых данных о пользователе
@@ -195,10 +206,12 @@ class Position(db.Model):
     __tablename__ = 'position'
     __table_args__ = {'extend_existing': True}
 
+    # Метод получения всех должностей
     @staticmethod
     def get_position():
         return Position.query.all()
 
+    # Метод получения ID должности по её именованию
     @staticmethod
     def get_position_id_by_name(position_name):
         position = Position.query.filter_by(position_name=position_name).one()
@@ -210,6 +223,7 @@ class EmployeePosition(db.Model):
     __tablename__ = 'employee_position'
     __table_args__ = {'extend_existing': True}
 
+    # Создание связи по внешней ссылке
     position = db.relationship('Position', backref='position', uselist=False)
 
     # Метод получения позиции сотрудника по его персональному номеру
@@ -243,10 +257,12 @@ class Schedule(db.Model):
     __tablename__ = 'schedule'
     __table_args__ = {'extend_existing': True}
 
+    # Метод получения всей информации по расписанию
     @staticmethod
     def get_schedule():
         return Schedule.query.all()
 
+    # Метод удаления сеанса из расписания
     @staticmethod
     def delete_schedule(name_play, date_and_time, hall_number):
         try:
@@ -256,15 +272,18 @@ class Schedule(db.Model):
         except:
             DbErrorDel()
 
+    # Метод получения информации о расписании по названию спектакля, году постановки и времени проведения сеанса
     @staticmethod
     def get_schedule_by_name_play_stage_year_datetime(name_play, stage_year, date_and_time):
         mamba = Schedule.query.filter_by(name_play=name_play, stage_year=stage_year, date_and_time=date_and_time).one()
         return mamba
 
+    # Метод получения информации о расписании по названию спектакля
     @staticmethod
     def get_all_schedule_by_name_play(name_play):
         return Schedule.query.filter_by(name_play=name_play).all()
 
+    # Метод добавления нового сеанса в расписание
     @staticmethod
     def add_schedule_position(date_and_time, hall_number, type_play, name_play, stage_year):
         new_schedule = Schedule(date_and_time=date_and_time, hall_number=hall_number, type_play=type_play,
@@ -284,18 +303,22 @@ class ActorRole(db.Model):
 
     employee = db.relationship('Employee', backref='employee', uselist=False)
 
+    # Метод получения всего расписания сотрудников
     @staticmethod
     def get_actor_role():
         return ActorRole.query.all()
 
+    # Метод выделения определённых позиций в расписании по названию спектакля
     @staticmethod
     def get_actor_role_by_name_play(name_play):
         return ActorRole.query.filter_by(name_play=name_play).all()
 
+    # Методе выделения определённых позиций в расписании по персональному номеру сотрудника
     @staticmethod
     def get_actor_role_by_id(id_user):
         return ActorRole.query.filter_by(personal_number_employee=id_user).all()
 
+    # Метод добавления новой позиции в расписание сотрудников
     @staticmethod
     def add_actor_role(personal_number_employee, hall_number, date_and_time, name_role, name_play, stage_year):
         role_for_schedule = ActorRole(personal_number_employee=personal_number_employee, hall_number=hall_number,
@@ -308,6 +331,7 @@ class ActorRole(db.Model):
         except:
             DbErrorAdd()
 
+    # Метод удаления позиции из расписания актёров
     @staticmethod
     def delete_actor_role_position(name_play, date_and_time, personal_number_employee):
         try:
