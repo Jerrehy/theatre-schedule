@@ -1,5 +1,5 @@
 from flask import render_template, redirect, url_for, session, Blueprint, request
-from theatre.models import PlayInfo, Employee, Schedule, ActorRole
+from theatre.models import EmployeePosition, Employee, Schedule, ActorRole
 from theatre.forms import RoleEmployee, AddRoleSchedule
 from flask_login import login_required
 
@@ -15,6 +15,9 @@ def schedule_employee():
         roles = ActorRole.get_actor_role()
         tabletop = Schedule.get_schedule()
         employers = Employee.get_employee()
+        employers_positions = EmployeePosition.get_all_employee_position()
+        employers_in_positions = list(set([i.personal_number for i in employers_positions
+                                           if i.id_position != 7 and i.id_position != 8]))
 
         # Форма для добавления позиции в расписание сотрудников
         add_schedule_role_form = AddRoleSchedule()
@@ -38,9 +41,8 @@ def schedule_employee():
         add_schedule_role_form.name_session.choices = list(set([i.name_play for i in tabletop]))
 
         # Заполнение select поля с выбором сотрудников, исключая администраторов и модераторов
-        add_schedule_role_form.actor.choices = list(set([i.fio for i in employers if
-                                                         i.employee_position.id_position != 7 and
-                                                         i.employee_position.id_position != 8]))
+        add_schedule_role_form.actor.choices = list(set([i.fio for i in employers
+                                                         if i.personal_number in employers_in_positions]))
 
         # Обращение к БД для получения информации по известному названию спектакля
         schedule_info_for_form = Schedule.get_all_schedule_by_name_play(add_schedule_role_form.name_session.choices[0])

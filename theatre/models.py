@@ -226,6 +226,11 @@ class EmployeePosition(db.Model):
     # Создание связи по внешней ссылке
     position = db.relationship('Position', backref='position', uselist=False)
 
+    # Метод получения всех позиций
+    @staticmethod
+    def get_all_employee_position():
+        return EmployeePosition.query.all()
+
     # Метод получения позиции сотрудника по его персональному номеру
     @staticmethod
     def get_employee_position_for_personal_number(personal_number):
