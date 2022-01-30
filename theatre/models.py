@@ -131,8 +131,7 @@ class Employee(db.Model, UserMixin):
     __tablename__ = 'employee'
     __table_args__ = {'extend_existing': True}
 
-    position = db.relationship('Position', backref='position', uselist=False)
-
+    employee_position = db.relationship('EmployeePosition', backref='employee_position', uselist=False)
     personal_number = db.Column(db.Integer(), primary_key=True)
 
     # Метод получения ID пользователя из таблицы
@@ -159,16 +158,6 @@ class Employee(db.Model, UserMixin):
     def delete_employee_by_fio(fio):
         try:
             Employee.query.filter_by(fio=fio).delete()
-            db.session.commit()
-        except:
-            DbErrorAdd()
-
-    @staticmethod
-    def update_employee_by_fio(fio, position_name):
-        try:
-            employee_for_update = Employee.get_employee_by_fio(fio)
-            new_position_id = Position.get_position_id_by_name(position_name)
-            employee_for_update.id_position = new_position_id
             db.session.commit()
         except:
             DbErrorAdd()
@@ -214,6 +203,39 @@ class Position(db.Model):
     def get_position_id_by_name(position_name):
         position = Position.query.filter_by(position_name=position_name).one()
         return position.id_position
+
+
+# Подключение таблицы со связью позиции сотрудника и его аккаунта
+class EmployeePosition(db.Model):
+    __tablename__ = 'employee_position'
+    __table_args__ = {'extend_existing': True}
+
+    position = db.relationship('Position', backref='position', uselist=False)
+
+    # Метод получения позиции сотрудника по его персональному номеру
+    @staticmethod
+    def get_employee_position_for_personal_number(personal_number):
+        return EmployeePosition.query.filter_by(personal_number=personal_number).one()
+
+    # Метод добавления информации о новом сотруднике
+    @staticmethod
+    def add_employee_position(personal_number, id_position):
+        try:
+            employee_position_for_add = EmployeePosition(personal_number=personal_number, id_position=id_position)
+            db.session.add(employee_position_for_add)
+            db.session.commit()
+        except:
+            DbErrorAdd()
+
+    # Обновление должности назначенного сотрудника
+    @staticmethod
+    def update_employee_position(personal_number, id_position):
+        try:
+            employee_for_update = EmployeePosition.get_employee_position_for_personal_number(personal_number)
+            employee_for_update.id_position = id_position
+            db.session.commit()
+        except:
+            DbErrorAdd()
 
 
 # Подключение таблицы с общим расписанием сеансов

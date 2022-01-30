@@ -9,12 +9,12 @@ from theatre.models import Employee
 class RegisterForm(FlaskForm):
     # Проверка наличия совпадений имён пользователей при создании нового пользователя
     def validate_username(self, username_to_check):
-        user = Employee.get_employee_for_username(username_to_check.data)
+        user = Employee.get_employee_by_username(username_to_check.data)
         if user:
             raise ValidationError('Такое имя пользователя уже есть! Попробуйте придумать другое')
 
     def validate_fio(self, fio_to_check):
-        fio = Employee.get_employee_for_fio(fio_to_check.data)
+        fio = Employee.get_employee_by_fio(fio_to_check.data)
         if fio:
             raise ValidationError('У такого человека уже существует аккаунт! '
                                   'Если пароль и логин забыты, то обратитесь к администратору')

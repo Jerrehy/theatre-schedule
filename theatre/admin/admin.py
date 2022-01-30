@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, session
-from theatre.models import Employee, Position
+from theatre.models import Employee, Position, EmployeePosition
 from theatre.forms import ChangeEmployee
 from flask_login import login_required, current_user
 
@@ -33,7 +33,18 @@ def employee():
 
             # Изменение должности сотрудника
             elif change_form.submit_up_empl.data:
-                Employee.update_employee_by_fio(change_form.employee_fio.data, change_form.position_name.data)
+                # Получение данных для обращения к должности сотрудника
+                employee_for_update = Employee.get_employee_by_fio(change_form.employee_fio.data)
+                id_position_for_update = Position.get_position_id_by_name(change_form.position_name.data)
+                id_employee_for_update = employee_for_update.personal_number
+
+                # Изменение должности сотрудника, если она была назначена
+                if EmployeePosition.get_employee_position_for_personal_number(id_employee_for_update):
+                    EmployeePosition.update_employee_position(id_employee_for_update, id_position_for_update)
+                # Добавление должности для нового сотрудника
+                else:
+                    EmployeePosition.add_employee_position(id_employee_for_update, id_position_for_update)
+
                 return redirect(url_for('admin.employee'))
 
         # возвращение html шаблона с работниками

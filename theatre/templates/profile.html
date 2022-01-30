@@ -11,7 +11,11 @@
         <h1 class="display-4 font-weight-normal">Профиль пользователя</h1>
         <br>
         <p class="lead font-weight-normal">ФИО сотрудника: {{ employee.fio}}</p>
-        <p class="lead font-weight-normal">Должность: {{ employee.position.position_name }}</p>
+        {% if employee.employee_position %}
+            <p class="lead font-weight-normal">Должность: {{ employee.employee_position.position.position_name }}</p>
+        {% else %}
+        <p class="lead font-weight-normal">Должность: {{ None }}</p>
+        {% endif %}
         <p class="lead font-weight-normal">День рождения: {{ employee.birthday}}</p>
         <p class="lead font-weight-normal">Мобильный номер телефона: {{ employee.mobile_number}}</p>
         <p class="lead font-weight-normal">Домашний номер телефона: {{ employee.home_phone_number}}</p>

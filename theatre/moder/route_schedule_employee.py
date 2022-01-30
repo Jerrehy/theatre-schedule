@@ -38,8 +38,9 @@ def schedule_employee():
         add_schedule_role_form.name_session.choices = list(set([i.name_play for i in tabletop]))
 
         # Заполнение select поля с выбором сотрудников, исключая администраторов и модераторов
-        add_schedule_role_form.actor.choices = list(set([i.fio for i in employers if i.id_position
-                                                         and i.id_position != 7 and i.id_position != 8]))
+        add_schedule_role_form.actor.choices = list(set([i.fio for i in employers if
+                                                         i.employee_position.id_position != 7 and
+                                                         i.employee_position.id_position != 8]))
 
         # Обращение к БД для получения информации по известному названию спектакля
         schedule_info_for_form = Schedule.get_all_schedule_by_name_play(add_schedule_role_form.name_session.choices[0])

@@ -14,10 +14,10 @@ def register_page():
 
     # Проверка нажатия кнопки "Создать аккаунт"
     if form.validate_on_submit():
-        Employee.add_employee(fio=form.fio.data, birthday=form.birthday.data,
+        Employee.add_employee(username=form.username.data, fio=form.fio.data, birthday=form.birthday.data,
                               mobile_number=form.mobile_number.data, home_phone_number=form.home_phone_number.data,
                               adress=form.adress.data, password=form.password1.data)
-        return redirect(url_for('login_page'))
+        return redirect(url_for('auth.login_page'))
 
     # Механизм вывода ошибок при создании нового пользователя
     if form.errors != {}:
@@ -42,7 +42,10 @@ def login_page():
             if form.password.data in attempted_user.password:
                 login_user(attempted_user)
                 flash(f'Вход выполнен успешно! Вы зашли как {attempted_user.username}', category='success')
-                session['role'] = attempted_user.id_position
+                if attempted_user.employee_position:
+                    session['role'] = attempted_user.employee_position.id_position
+                else:
+                    session['role'] = None
             else:
                 flash('Пароль неверный! Попробуйте снова', category='danger')
 
