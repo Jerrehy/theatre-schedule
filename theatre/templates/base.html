@@ -35,12 +35,12 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('employee_schedule.personal_schedule_employee') }}"> Моё расписание </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('route_schedule_session.schedule_session') }}"> Расписание сеансов </a>
+                </li>
                 {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('route_schedule_employee.schedule_employee') }}"> Расписание сотрудников </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('route_schedule_session.schedule_session') }}"> Расписание сеансов </a>
                 </li>
                 {% endif %}
                 <!-- Отображение если пользователь админ -->

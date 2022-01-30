@@ -169,7 +169,7 @@ class Employee(db.Model, UserMixin):
             Employee.query.filter_by(fio=fio).delete()
             db.session.commit()
         except:
-            DbErrorAdd()
+            DbErrorDel()
 
     # Метод изменения информации о сотруднике
     @staticmethod
@@ -271,8 +271,7 @@ class Schedule(db.Model):
     @staticmethod
     def delete_schedule(name_play, date_and_time, hall_number):
         try:
-            db.session.query(Schedule).filter_by(name_play=name_play, date_and_time=date_and_time,
-                                                 hall_number=hall_number).delete()
+            Schedule.query.filter_by(name_play=name_play, date_and_time=date_and_time, hall_number=hall_number).delete()
             db.session.commit()
         except:
             DbErrorDel()
@@ -280,8 +279,7 @@ class Schedule(db.Model):
     # Метод получения информации о расписании по названию спектакля, году постановки и времени проведения сеанса
     @staticmethod
     def get_schedule_by_name_play_stage_year_datetime(name_play, stage_year, date_and_time):
-        mamba = Schedule.query.filter_by(name_play=name_play, stage_year=stage_year, date_and_time=date_and_time).one()
-        return mamba
+        return Schedule.query.filter_by(name_play=name_play, stage_year=stage_year, date_and_time=date_and_time).one()
 
     # Метод получения информации о расписании по названию спектакля
     @staticmethod
@@ -293,7 +291,6 @@ class Schedule(db.Model):
     def add_schedule_position(date_and_time, hall_number, type_play, name_play, stage_year):
         new_schedule = Schedule(date_and_time=date_and_time, hall_number=hall_number, type_play=type_play,
                                 name_play=name_play, stage_year=stage_year)
-
         try:
             db.session.add(new_schedule)
             db.session.commit()
@@ -329,7 +326,6 @@ class ActorRole(db.Model):
         role_for_schedule = ActorRole(personal_number_employee=personal_number_employee, hall_number=hall_number,
                                       date_and_time=date_and_time, name_role=name_role, name_play=name_play,
                                       stage_year=stage_year)
-
         try:
             db.session.add(role_for_schedule)
             db.session.commit()
