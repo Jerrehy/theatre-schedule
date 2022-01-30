@@ -234,7 +234,7 @@ class EmployeePosition(db.Model):
     # Метод получения позиции сотрудника по его персональному номеру
     @staticmethod
     def get_employee_position_for_personal_number(personal_number):
-        return EmployeePosition.query.filter_by(personal_number=personal_number).one()
+        return EmployeePosition.query.filter_by(personal_number=personal_number).all()
 
     # Метод добавления информации о новом сотруднике
     @staticmethod
