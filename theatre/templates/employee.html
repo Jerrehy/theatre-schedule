@@ -32,7 +32,11 @@
                <td>{{ employee.mobile_number }}</td>
                <td>{{ employee.home_phone_number }}</td>
                <td>{{ employee.adress }}</td>
+               {% if employee.employee_position %}
                <td>{{ employee.employee_position.position.position_name }}</td>
+               {% else %}
+               <td> Аккаунт ждёт активации! </td>
+               {% endif %}
             </tr>
             {% endfor %}
          </tbody>
